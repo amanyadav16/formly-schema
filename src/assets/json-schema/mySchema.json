@@ -149,6 +149,7 @@
                 "SourceRepository": {
                   "const": "CODECOMMIT"
                 },
+
                 "RepositoryName": {
                   "type": "string",
                   "cannotBeUpdated": true,
@@ -166,7 +167,8 @@
                     "type": "string",
                     "$ref": "#/definitions/regions"
                   },
-                  "minItems": 1,
+                  "minItems": 2,
+                  "maxItems": 3,
                   "uniqueItems": true
                 },
                 "Environments": {
@@ -696,55 +698,55 @@
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable CloudWatch",
-                                "default": false
+                                "default": true
                               },
                               "CodeCommit": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable CodeCommit",
-                                "default": false
+                                "default": true
                               },
                               "CodeCommitGit": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable CodeCommitGit",
-                                "default": false
+                                "default": true
                               },
                               "CodeBuild": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable CodeBuild",
-                                "default": false
+                                "default": true
                               },
                               "CodePipeline": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable CodePipeline",
-                                "default": false
+                                "default": true
                               },
                               "EC2": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable EC2",
-                                "default": false
+                                "default": true
                               },
                               "EC2ImageBuilder": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable EC2 Image Builder",
-                                "default": false
+                                "default": true
                               },
                               "EC2Message": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable EC2 Message",
-                                "default": false
+                                "default": true
                               },
                               "EFS": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable EFS",
-                                "default": false
+                                "default": true
                               },
                               "FSx": {
                                 "type": "boolean",
@@ -756,85 +758,85 @@
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable Kinesis Firehose",
-                                "default": false
+                                "default": true
                               },
                               "RDS": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable RDS",
-                                "default": false
+                                "default": true
                               },
                               "RDSData": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable RDS Data",
-                                "default": false
+                                "default": true
                               },
                               "S3": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable S3",
-                                "default": false
+                                "default": true
                               },
                               "SecretsManager": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable Secrets Manager",
-                                "default": false
+                                "default": true
                               },
                               "SSM": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable SSM",
-                                "default": false
+                                "default": true
                               },
                               "SSMMessage": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable SSM Message",
-                                "default": false
+                                "default": true
                               },
                               "STS": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable STS",
-                                "default": false
+                                "default": true
                               },
                               "Athena": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable Athena",
-                                "default": false
+                                "default": true
                               },
                               "DataSync": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable DataSync",
-                                "default": false
+                                "default": true
                               },
                               "ECRDkr": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable ECRDkr",
-                                "default": false
+                                "default": true
                               },
                               "ECRApi": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable ECR API",
-                                "default": false
+                                "default": true
                               },
                               "Lambda": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable Lambda",
-                                "default": false
+                                "default": true
                               },
                               "KMS": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable KMS",
-                                "default": false
+                                "default": true
                               },
                               "CloudHSMV2": {
                                 "type": "boolean",
@@ -846,13 +848,13 @@
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable SQS",
-                                "default": false
+                                "default": true
                               },
                               "ElastiCache": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable ElasticCache",
-                                "default": false
+                                "default": true
                               },
                               "ElastiCacheFIPS": {
                                 "type": "boolean",
@@ -864,13 +866,13 @@
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable Memory DB",
-                                "default": false
+                                "default": true
                               },
                               "ELB": {
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable ELB",
-                                "default": false
+                                "default": true
                               },
                               "CodeCommitFIPS": {
                                 "type": "boolean",
@@ -1267,5 +1269,12 @@
       },
       "minProperties": 1
     }
+  },
+  "model": {
+    "deploymentEnvironment": [
+      {
+        "regionalParameters": [{}]
+      }
+    ]
   }
 }

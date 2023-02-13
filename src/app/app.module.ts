@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { HttpClientModule } from '@angular/common/http';
@@ -55,6 +55,25 @@ export function typeValidationMessage({ schemaType }: any) {
   return `should be "${schemaType[0]}".`;
 }
 
+export function MultiSelectMinValidator(control: AbstractControl,field: FormlyFieldConfig,): any {
+  return control.value.length >= field.props?.minItems
+    ? null
+    : {
+        'multi-select-min': {
+          message: `Should not have fewer than ${field.props?.minItems} items`,
+        },
+      };
+}
+export function MultiSelectMaxValidator(control: AbstractControl,field: FormlyFieldConfig,):any {
+  return control.value.length <= field.props?.maxItems
+    ? null
+    : {
+        'multi-select-min': {
+          message: `Should not have more than ${field.props?.maxItems} items`,
+        },
+      };
+}
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -63,6 +82,10 @@ export function typeValidationMessage({ schemaType }: any) {
     HttpClientModule,
     MatMenuModule,
     FormlyModule.forRoot({
+      validators: [
+        { name: 'multi-select-min', validation: MultiSelectMinValidator },
+        { name: 'multi-select-max', validation: MultiSelectMaxValidator },
+      ],
       validationMessages: [
         { name: 'required', message: 'This field is required' },
         { name: 'type', message: typeValidationMessage },
