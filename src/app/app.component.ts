@@ -4,7 +4,7 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
-import schema from '../assets/json-schema/mySchema.json';
+import data from '../assets/json-schema/mySchema.json';
 
 @Component({
   selector: 'formly-app-example',
@@ -24,7 +24,7 @@ export class AppComponent {
   ngOnInit() {
     this.form = new FormGroup({});
     this.options = {};
-    this.fields = [this.formlyJsonschema.toFieldConfig(schema)];
+    this.fields = [this.formlyJsonschema.toFieldConfig(data.schema)];
     this.model = {};
   }
 
