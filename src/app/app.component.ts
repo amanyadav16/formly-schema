@@ -3,7 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
 import { HttpClient } from '@angular/common/http';
-import data from '../assets/json-schema/mySchema.json';
+import data from '../assets/json-schema/nested.json';
+import traverse = require('json-schema-traverse');
 
 @Component({
   selector: 'formly-app-example',
@@ -15,35 +16,49 @@ export class AppComponent {
   model: any;
   options: FormlyFormOptions;
   fields: FormlyFieldConfig[];
+  supportFields = ['string', 'integer', 'boolean', 'number', 'array'];
 
   constructor(
     private formlyJsonschema: FormlyJsonschema,
     private http: HttpClient
   ) {}
 
+  schema2 = {
+    properties: {
+      foo: { type: 'string' },
+      bar: { type: 'integer' },
+    },
+  };
+
   ngOnInit() {
     this.form = new FormGroup({});
     this.options = {};
     this.fields = [
-      this.formlyJsonschema.toFieldConfig(data.schema, {
+      this.formlyJsonschema.toFieldConfig(this.prepareJsonFields(data.schema), {
         map: (mappedField: FormlyFieldConfig) => {
           mappedField.validation = { show: false };
-          if (mappedField.type === 'enum') {
-            if (mappedField.props?.minItems || mappedField.props?.maxItems) {
-              this.tempMappedField = mappedField;
-              mappedField.validators!.validation =
-                this.getMultiSelectValidators(
-                  mappedField.props.minItems != undefined,
-                  mappedField.props.maxItems != undefined
-                );
-              mappedField.defaultValue = [];
-            }
+          if (mappedField.type == 'string') {
+            // console.log(mappedField)
           }
           return mappedField;
         },
       }),
     ];
     this.model = {};
+    console.log(this.prepareJsonFields(data.schema));
+  }
+
+  prepareJsonFields(json: any) {
+    const self = this;
+    traverse(json, { allKeys: true }, (subSchema: any) => {
+      if (self.supportFields.find((data) => data == subSchema.type)) {
+        if (subSchema.cannotBeUpdated) {
+          //console.log('HI')
+          subSchema.readOnly = true;
+        }
+      }
+    });
+    return json;
   }
 
   getMultiSelectValidators(minValidate: any, maxValidate: any) {

@@ -2,12 +2,11 @@
   "schema": {
     "title": "A list of tasks",
     "type": "object",
-    "required": [
-      "title"
-    ],
+    "required": ["title"],
     "properties": {
       "title": {
         "type": "string",
+        "cannotBeUpdated": true,
         "title": "Task list title"
       },
       "tasks": {
@@ -15,14 +14,13 @@
         "title": "Tasks",
         "items": {
           "type": "object",
-          "required": [
-            "title"
-          ],
+          "required": ["title"],
           "properties": {
             "title": {
               "type": "string",
               "title": "Title",
-              "description": "A sample title"
+              "description": "A sample title",
+              "cannotBeUpdated": true
             },
             "details": {
               "type": "string",

@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
     "core-js": "^3.27.2",
+    "json-schema-traverse": "^1.0.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.5.0",
     "zone.js": "^0.12.0"
