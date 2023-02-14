@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 import { FormlyJsonschema } from '@ngx-formly/core/json-schema';
 import { HttpClient } from '@angular/common/http';
-import data from '../assets/json-schema/nested.json';
+import data from '../assets/json-schema/mySchema.json';
 import traverse = require('json-schema-traverse');
 
 @Component({
@@ -45,16 +45,18 @@ export class AppComponent {
       }),
     ];
     this.model = {};
-    console.log(this.prepareJsonFields(data.schema));
+    //  console.log(this.prepareJsonFields(data.schema));
   }
-
+  count = 1;
   prepareJsonFields(json: any) {
     const self = this;
     traverse(json, { allKeys: true }, (subSchema: any) => {
       if (self.supportFields.find((data) => data == subSchema.type)) {
-        if (subSchema.cannotBeUpdated) {
-          //console.log('HI')
+        if (subSchema.cannotBeUpdated === true) {
+          console.log(this.count++);
           subSchema.readOnly = true;
+        } else {
+          subSchema.readOnly = false;
         }
       }
     });
