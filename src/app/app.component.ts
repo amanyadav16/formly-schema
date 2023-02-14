@@ -27,7 +27,6 @@ export class AppComponent {
     this.fields = [
       this.formlyJsonschema.toFieldConfig(data.schema, {
         map: (mappedField: FormlyFieldConfig) => {
-          mappedField.validation = { show: false };
           if (mappedField.type === 'enum') {
             if (mappedField.props?.minItems || mappedField.props?.maxItems) {
               this.tempMappedField = mappedField;
