@@ -169,24 +169,12 @@
                   "minItems": 1,
                   "uniqueItems": true
                 },
-                "Environments": {
-                  "type": "array",
-                  "cannotBeUpdated": false,
-                  "title": "Environments *",
-                  "description": "List of environments. Note: The Environments specified here must match the environments specified in the application",
-                  "items": {
-                    "type": "string",
-                    "pattern": "^\\S+$"
-                  },
-                  "minItems": 1,
-                  "uniqueItems": true
-                },
                 "DeployVPCForImageBuilder": {
                   "type": "boolean",
                   "cannotBeUpdated": false,
                   "title": "Deploy VPC for Image Builder",
                   "description": "Toggle to create and tag a Spoke VPC for compatibility with SCF Endpoint Security product",
-                  "default": true
+                  "default": false
                 },
                 "GlobalCloudCIDRList": {
                   "title": "Global Cloud CIDRs *",
@@ -213,7 +201,6 @@
                   "cannotBeUpdated": false,
                   "title": "Default Region CIDR Quantity",
                   "description": "The number of region pools per region. Note: When 3 CIDR blocks are running out, you will need to manually add another CIDR block allocated to that region",
-                  "pattern": "^[0-9]{2}$",
                   "default": 3
                 },
                 "EnableGlobalSG": {
@@ -228,14 +215,15 @@
                   "cannotBeUpdated": false,
                   "title": "Deploy Firewall Endpoints",
                   "description": "Toggle to deploy firewall endpoints",
-                  "default": true
+                  "default": false
                 },
                 "FirewallVersion": {
                   "type": "string",
                   "cannotBeUpdated": false,
                   "title": "Firewall Version",
                   "description": "It is recommended not to change the Firewall version. This is because the version numbers are dynamically found using this input. If it is changed, the Panorama will be completely redeployed.",
-                  "default": "10.1.3"
+                  "default": "10.1.3",
+                  "pattern": "^[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}$"
                 },
                 "FirewallInstanceSpecs": {
                   "type": "array",
@@ -459,7 +447,7 @@
                           "title": "Panorama Version",
                           "description": "It is recommended not to change the Panorama version. This is because the version numbers are dynamically found using this input. If it is changed, the Panorama will be completely redeployed.",
                           "default": "10.1.3-h1",
-                          "pattern": "^\\S+$"
+                          "pattern": "^[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}-[a-z][0-9]$"
                         },
                         "PanoramaSerialPrimary": {
                           "type": "string",
@@ -498,7 +486,7 @@
                           "default": true
                         },
                         "PanoAdminAccessCidrs": {
-                          "title": "Panorama Admin Access CIDRs",
+                          "title": "Panorama Admin Access CIDRs *",
                           "description": "List of CIDRs that are allowed to access Panorama",
                           "type": "array",
                           "cannotBeUpdated": false,
@@ -509,7 +497,7 @@
                           "uniqueItems": true
                         },
                         "PanoAdminInternalAccessCidrs": {
-                          "title": "Panorama Admin Internal Access CIDRs",
+                          "title": "Panorama Admin Internal Access CIDRs *",
                           "description": "List of internal CIDRs that are allowed to access Panorama",
                           "type": "array",
                           "cannotBeUpdated": false,
@@ -523,6 +511,7 @@
                           "type": "boolean",
                           "cannotBeUpdated": false,
                           "title": "Deploy External Panorama Backdoor",
+                          "description": "Enables externally facing Internet access to Panorama in case of self-lock-out situation",
                           "default": true
                         }
                       },
@@ -549,9 +538,38 @@
                           "title": "Test Network Account",
                           "description": "The account the test network is shared to",
                           "pattern": "^[0-9]{12}$"
+                        },
+                        "Environments": {
+                          "type": "array",
+                          "readOnly": true,
+                          "title": "Environments *",
+                          "description": "List of environments. Note: The Environments specified here must match the environments specified in the application",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^\\S+$"
+                          },
+                          "default": ["prod", "test", "abc"]
                         }
                       },
                       "required": ["TestNetworkAccount"]
+                    },
+                    {
+                      "properties": {
+                        "DeployTestNetwork": {
+                          "const": false
+                        },
+                        "Environments": {
+                          "type": "array",
+                          "readOnly": true,
+                          "title": "Environments *",
+                          "description": "List of environments. Note: The Environments specified here must match the environments specified in the application",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^\\S+$"
+                          },
+                          "default": ["prod"]
+                        }
+                      }
                     }
                   ]
                 },
@@ -564,10 +582,21 @@
                         },
                         "SharedServicesAccount": {
                           "type": "string",
-                          "cannotBeUpdated": true,
+                          "cannotBeUpdated": false,
                           "title": "Shared Services Account",
                           "description": "The account ID of the Shared Services account",
                           "pattern": "^[0-9]{12}$"
+                        },
+                        "Environments": {
+                          "type": "array",
+                          "readOnly": true,
+                          "title": "Environments *",
+                          "description": "List of environments. Note: The Environments specified here must match the environments specified in the application",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^\\S+$"
+                          },
+                          "default": ["prod", "test"]
                         }
                       },
                       "required": ["SharedServicesAccount"]
@@ -592,7 +621,7 @@
                           "uniqueItems": true
                         },
                         "GlobalWafWhiteListIps": {
-                          "title": "List of Global WAF IPs to be whitelisted/enabled",
+                          "title": "List of Global WAF IPs to be whitelisted/enabled *",
                           "type": "array",
                           "cannotBeUpdated": false,
                           "items": {
@@ -602,7 +631,7 @@
                           "uniqueItems": true
                         },
                         "GlobalWafBlackListIps": {
-                          "title": "List of Global WAF IPs to be blacklisted/blocked",
+                          "title": "List of Global WAF IPs to be blacklisted/blocked *",
                           "type": "array",
                           "cannotBeUpdated": false,
                           "items": {
@@ -612,7 +641,11 @@
                           "uniqueItems": true
                         }
                       },
-                      "required": ["GlobalWafOUs"]
+                      "required": [
+                        "GlobalWafOUs",
+                        "GlobalWafWhiteListIps",
+                        "GlobalWafBlackListIps"
+                      ]
                     }
                   ]
                 },
@@ -687,7 +720,7 @@
                         },
                         "CentralVPCEndpoints": {
                           "type": "array",
-                          "title": "Central VPC Endpoint Parameters",
+                          "title": "Central VPC Endpoint Parameters *",
                           "description": "Toggle the VPC endpoints you would like to deploy. It is possible that the deployment may face issues due to too many resources being deployed at once. To avoid this, you can stagger the deployment by disabling/unchecking some of the Central VPC Endpoints and enabling them in a separate commit and push to the repository. If it still fails to provision, retrying may be the solution",
                           "items": {
                             "type": "object",
@@ -750,7 +783,7 @@
                                 "type": "boolean",
                                 "cannotBeUpdated": false,
                                 "title": "Enable FSx",
-                                "default": true
+                                "default": false
                               },
                               "KinesisFirehose": {
                                 "type": "boolean",
@@ -937,13 +970,13 @@
                 "ServiceCatalogProviderName",
                 "RepositoryName",
                 "EnabledRegions",
-                "Environments",
                 "GlobalCloudCIDRList",
                 "OrgUnitId",
                 "FirewallVersion",
                 "VPCEndptIngressCIDR",
                 "ServiceQuotaAutomation",
-                "GlobalIngress"
+                "GlobalIngress",
+                "ProductOwner"
               ]
             },
             "regionalParameters": {
@@ -980,6 +1013,7 @@
                         "type": "string",
                         "cannotBeUpdated": false,
                         "title": "Dedicated Log Collector Serial Number",
+                        "description": "The serial number(s) of the dedicated log collectors as a list of strings",
                         "pattern": "^\\S+$"
                       },
                       "ResolverRules": {
@@ -1084,7 +1118,7 @@
                                 "title": "App Connector Version",
                                 "description": "The release date of the current app connector version",
                                 "default": "2022.03",
-                                "pattern": "^\\S+$"
+                                "pattern": "^[0-9]{1,4}.[0-9]{1,4}.[0-9]{1,4}$"
                               },
                               "AppConnectorInstanceSpecs": {
                                 "type": "string",
@@ -1185,11 +1219,7 @@
                                 "default": true
                               },
                               "BaseUrl": {
-                                "type": "string",
-                                "cannotBeUpdated": false,
-                                "title": "Zscaler Internet Access Base URL",
-                                "description": "",
-                                "default": "http://zsapi.zscalerthree.net"
+                                "const": "http://zsapi.zscalerthree.net"
                               }
                             },
                             "required": ["ZiaPolicyAsCodeEnabled", "BaseUrl"]
@@ -1219,11 +1249,7 @@
                                 "const": true
                               },
                               "CloudConnectorProvisioningUrl": {
-                                "type": "string",
-                                "cannotBeUpdated": false,
-                                "title": "Cloud Connector Provisioning URL",
-                                "description": "",
-                                "default": "connector.zscalerthree.net/api/v1/provUrl?name=SCF-Lab"
+                                "const": "connector.zscalerthree.net/api/v1/provUrl?name=SCF-Lab"
                               },
                               "InstanceSpecification": {
                                 "type": "array",
@@ -1239,7 +1265,7 @@
                                 "title": "Cloud Connector Version",
                                 "description": "",
                                 "default": "6.1.24",
-                                "pattern": "^\\S+$"
+                                "pattern": "^[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}$"
                               }
                             },
                             "required": [
@@ -1267,5 +1293,12 @@
       },
       "minProperties": 1
     }
+  },
+  "model": {
+    "deploymentEnvironment": [
+      {
+        "regionalParameters": [{}]
+      }
+    ]
   }
 }
